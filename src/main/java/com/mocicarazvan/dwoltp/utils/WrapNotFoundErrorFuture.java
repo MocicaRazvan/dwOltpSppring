@@ -12,8 +12,8 @@ public class WrapNotFoundErrorFuture {
         } catch (Exception e) {
             if (e instanceof CompletionException) {
 
-                if (e.getCause() instanceof NotFoundException) {
-                    throw new NotFoundException(((NotFoundException) e.getCause()).getEntity(), ((NotFoundException) e.getCause()).getCriteria());
+                if (e.getCause() instanceof NotFoundException notFoundException) {
+                    throw new NotFoundException(notFoundException.getEntity(), notFoundException.getCriteria());
                 }
                 throw new NotFoundException(serviceName, "dependency");
             }
