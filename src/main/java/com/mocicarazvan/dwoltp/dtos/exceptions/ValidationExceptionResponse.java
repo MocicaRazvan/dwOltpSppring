@@ -1,6 +1,7 @@
 package com.mocicarazvan.dwoltp.dtos.exceptions;
 
 import com.mocicarazvan.dwoltp.utils.Transformable;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +16,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ValidationExceptionResponse extends ExceptionResponse implements Transformable<ValidationExceptionResponse> {
+    @Schema(description = "Validation reasons, most of the time is like nameOfField: error message")
     private Map<String, Object> validationReasons;
 
     public static ValidationExceptionResponse fromExceptionResponse(ExceptionResponse base) {
