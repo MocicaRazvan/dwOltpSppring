@@ -17,4 +17,5 @@ public interface CofetarRepository extends JpaRepository<Cofetar, Long> {
                         and (:email is null or c.angajat.email ilike %:email%)
             """)
     Page<Cofetar> findAllByCustom(String nume, String prenume, String email, Long cofetarieId, String specializareQuery, Pageable pageable);
+
 }

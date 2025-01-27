@@ -2,6 +2,7 @@ package com.mocicarazvan.dwoltp.dtos.body;
 
 import com.mocicarazvan.dwoltp.dtos.common.DependencyId;
 import com.mocicarazvan.dwoltp.enums.SexTip;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -35,6 +36,7 @@ public class AngajatBody implements DependencyId<Long> {
     private Long cofetarieId;
 
     @Override
+    @Schema(hidden = true)
     public Long getDependencyId() {
         return cofetarieId;
     }

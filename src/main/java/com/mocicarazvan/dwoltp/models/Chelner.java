@@ -1,5 +1,6 @@
 package com.mocicarazvan.dwoltp.models;
 
+import com.mocicarazvan.dwoltp.models.supers.ModificatMappedSuper;
 import com.mocicarazvan.dwoltp.utils.GetId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Chelner implements GetId<Long> {
+public class Chelner extends ModificatMappedSuper implements GetId<Long> {
     @Id
     @Column(name = "ID_ANGAJAT", nullable = false, updatable = false)
     private Long id;

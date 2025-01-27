@@ -11,12 +11,14 @@ import com.mocicarazvan.dwoltp.services.common.BaseServiceWithDependency;
 import com.mocicarazvan.dwoltp.services.common.GetModel;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ChelnerService extends BaseServiceWithDependency
         <Long, Long, Chelner, ChelnerBody, Chelner, ChelnerRepository, Cofetarie> {
-    public ChelnerService(ChelnerRepository repository, ChelnerMapper mapper, GetModel<Cofetarie, Long> dependencyGetter, AngajatService angajatService) {
+    public ChelnerService(ChelnerRepository repository, ChelnerMapper mapper, GetModel<Cofetarie, Long> dependencyGetter,
+                          AngajatService angajatService) {
         super(repository, mapper, "chelner", dependencyGetter);
         this.angajatService = angajatService;
     }
@@ -32,9 +34,25 @@ public class ChelnerService extends BaseServiceWithDependency
         return a;
     }
 
+    @Override
+    public Chelner setDependency(ChelnerBody chelnerBody, Cofetarie dependency, Long aLong) {
+        Chelner c = getModelById(aLong);
+        mapper.updateModelFromBody(chelnerBody, c);
+        c.setAngajat(angajatService.setDependency(chelnerBody, dependency, aLong));
+        return c;
+    }
+
     public Page<Chelner> getPageable(int page, int size, String sortField, boolean ascending, String numeQuery, String prenumeQuery, String emailQuery, Long cofetarieId, Short ziVanzator) {
         return getPageable(page, size, sortField, ascending, (pr) -> repository.findAllByCustom(numeQuery, prenumeQuery, emailQuery, cofetarieId, ziVanzator, pr));
     }
 
+    @Override
+    public Pair<Boolean, String> existsByUniqueFieldUpdate(ChelnerBody chelnerBody, Long aLong) {
+        return angajatService.existsByUniqueFieldUpdate(chelnerBody, aLong);
+    }
 
+    @Override
+    public Pair<Boolean, String> existsByUniqueFieldCreate(ChelnerBody chelnerBody) {
+        return angajatService.existsByUniqueFieldCreate(chelnerBody);
+    }
 }

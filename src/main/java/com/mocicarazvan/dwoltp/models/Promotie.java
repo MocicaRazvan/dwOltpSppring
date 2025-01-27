@@ -1,5 +1,6 @@
 package com.mocicarazvan.dwoltp.models;
 
+import com.mocicarazvan.dwoltp.models.supers.ModificatMappedSuper;
 import com.mocicarazvan.dwoltp.utils.GetId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Promotie implements GetId<Long> {
+public class Promotie extends ModificatMappedSuper implements GetId<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_PROMOTIE", nullable = false, updatable = false)

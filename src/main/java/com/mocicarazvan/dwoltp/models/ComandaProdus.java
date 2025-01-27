@@ -1,6 +1,7 @@
 package com.mocicarazvan.dwoltp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mocicarazvan.dwoltp.models.supers.ModificatMappedSuper;
 import com.mocicarazvan.dwoltp.utils.GetId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ComandaProdus implements GetId<Long> {
+public class ComandaProdus extends ModificatMappedSuper implements GetId<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_COMANDA_PRODUS", nullable = false, updatable = false)

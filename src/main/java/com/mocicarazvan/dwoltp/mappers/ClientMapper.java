@@ -21,4 +21,20 @@ public class ClientMapper implements DtosModelMapper<ClientBody, Client, Client>
     public Client fromModelToResponse(Client client) {
         return client;
     }
+
+    @Override
+    public void updateModelFromBody(ClientBody clientBody, Client client) {
+        client.setNume(clientBody.getNume());
+        client.setPrenume(clientBody.getPrenume());
+        client.setEmail(clientBody.getEmail());
+        client.setTelefon(clientBody.getTelefon());
+    }
+
+    @Override
+    public void updateModelFromOldModel(Client modelToBeChanged, Client modelToChangeFrom) {
+        modelToBeChanged.setNume(modelToChangeFrom.getNume());
+        modelToBeChanged.setPrenume(modelToChangeFrom.getPrenume());
+        modelToBeChanged.setEmail(modelToChangeFrom.getEmail());
+        modelToBeChanged.setTelefon(modelToChangeFrom.getTelefon());
+    }
 }

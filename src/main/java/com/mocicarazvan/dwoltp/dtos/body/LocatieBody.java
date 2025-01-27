@@ -2,6 +2,7 @@ package com.mocicarazvan.dwoltp.dtos.body;
 
 
 import com.mocicarazvan.dwoltp.dtos.common.DependencyId;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -24,6 +25,7 @@ public class LocatieBody implements DependencyId<Long> {
     private Short nr;
 
     @Override
+    @Schema(hidden = true)
     public Long getDependencyId() {
         return orasId;
     }

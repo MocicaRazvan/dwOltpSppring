@@ -2,6 +2,7 @@ package com.mocicarazvan.dwoltp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mocicarazvan.dwoltp.models.composedIds.ProdusIngredientId;
+import com.mocicarazvan.dwoltp.models.supers.ModificatMappedSuper;
 import com.mocicarazvan.dwoltp.utils.GetId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProdusIngredient implements GetId<ProdusIngredientId> {
+public class ProdusIngredient extends ModificatMappedSuper implements GetId<ProdusIngredientId> {
     @EmbeddedId
     private ProdusIngredientId id;
 

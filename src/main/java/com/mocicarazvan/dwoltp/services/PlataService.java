@@ -19,9 +19,13 @@ import java.time.LocalDate;
 public class PlataService extends BaseService2Dependencies<Long, Long, Long, Plata, PlataBody, Plata,
         PlataRepository, Comanda, Chelner
         > {
-    public PlataService(PlataRepository repository, DtosModelMapper<PlataBody, Plata, Plata> mapper, GetModel<Comanda, Long> dependencyGetter1, GetModel<Chelner, Long> dependencyGetter2) {
+    public PlataService(PlataRepository repository, DtosModelMapper<PlataBody, Plata, Plata> mapper,
+                        GetModel<Comanda, Long> dependencyGetter1, GetModel<Chelner, Long> dependencyGetter2
+    ) {
         super(repository, mapper, "plata", dependencyGetter1, dependencyGetter2);
+
     }
+
 
     @Override
     public Pair<Long, Long> getDependencyIds(PlataBody plataBody) {
@@ -42,4 +46,15 @@ public class PlataService extends BaseService2Dependencies<Long, Long, Long, Pla
         p.setChelner(dependencies.getSecond());
         return p;
     }
+
+    @Override
+    public Plata setDependencies(PlataBody plataBody, Pair<Comanda, Chelner> dependencies, Long aLong) {
+        Plata p = getModelById(aLong);
+        mapper.updateModelFromBody(plataBody, p);
+        p.setComanda(dependencies.getFirst());
+        p.setChelner(dependencies.getSecond());
+        return p;
+    }
+
+
 }

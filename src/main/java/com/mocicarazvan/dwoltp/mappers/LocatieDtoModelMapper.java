@@ -19,4 +19,17 @@ public class LocatieDtoModelMapper implements DtosModelMapper<LocatieBody, Locat
     public Locatie fromModelToResponse(Locatie locatie) {
         return locatie;
     }
+
+    @Override
+    public void updateModelFromBody(LocatieBody body, Locatie locatie) {
+        locatie.setNr(body.getNr());
+        locatie.setNumeStrada(body.getNumeStrada());
+    }
+
+    @Override
+    public void updateModelFromOldModel(Locatie modelToBeChanged, Locatie modelToChangeFrom) {
+//        modelToBeChanged.setOras(modelToChangeFrom.getOras());
+        modelToBeChanged.setNumeStrada(modelToChangeFrom.getNumeStrada());
+        modelToBeChanged.setNr(modelToChangeFrom.getNr());
+    }
 }

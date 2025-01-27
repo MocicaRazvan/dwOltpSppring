@@ -9,7 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 public interface AngajatRepository extends JpaRepository<Angajat, Long> {
     boolean existsAllByEmail(String email);
 
+    boolean existsAllByTelefon(String telefon);
+
     boolean existsAllByEmailAndIdNot(String email, Long id);
+
+    boolean existsAllByTelefonAndIdNot(String telefon, Long id);
 
     @Query("""
                     select a from Angajat a

@@ -18,15 +18,25 @@ import java.time.LocalDate;
 @Service
 public class PromotieService extends BaseServiceWithDependency
         <Long, Long, Promotie, PromotieBody, Promotie, PromotieRepository, Produs> {
-    public PromotieService(PromotieRepository repository, PromotieMapper mapper, GetModel<Produs, Long> dependencyGetter) {
+    public PromotieService(PromotieRepository repository, PromotieMapper mapper, GetModel<Produs, Long> dependencyGetter
+    ) {
         super(repository, mapper, "promotie", dependencyGetter);
     }
+
 
     @Override
     public Promotie setDependency(PromotieBody angajatBody, Produs dependency) {
         Promotie a = mapper.fromBodyToModel(angajatBody);
         a.setProdus(dependency);
         return a;
+    }
+
+    @Override
+    public Promotie setDependency(PromotieBody promotieBody, Produs dependency, Long aLong) {
+        Promotie c = getModelById(aLong);
+        mapper.updateModelFromBody(promotieBody, c);
+        c.setProdus(dependency);
+        return c;
     }
 
     public Page<Promotie> getPageable(int page, int size, String sortField, boolean ascending, LocalDate perioadaStart, LocalDate perioadaFinal, Long produsId,

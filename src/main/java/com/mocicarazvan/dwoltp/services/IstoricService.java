@@ -21,9 +21,13 @@ import java.time.LocalDate;
 public class IstoricService extends BaseService2Dependencies<IstoricId, Long, Long, Istoric, IstoricBody, Istoric,
         IstoricRepository, Angajat, Cofetarie
         > {
-    public IstoricService(IstoricRepository repository, DtosModelMapper<IstoricBody, Istoric, Istoric> mapper, GetModel<Angajat, Long> dependencyGetter1, GetModel<Cofetarie, Long> dependencyGetter2) {
+    public IstoricService(IstoricRepository repository, DtosModelMapper<IstoricBody, Istoric, Istoric> mapper,
+                          GetModel<Angajat, Long> dependencyGetter1, GetModel<Cofetarie, Long> dependencyGetter2
+    ) {
         super(repository, mapper, "istoric", dependencyGetter1, dependencyGetter2);
+
     }
+
 
     @Override
     public Pair<Long, Long> getDependencyIds(IstoricBody istoricBody) {
@@ -37,6 +41,16 @@ public class IstoricService extends BaseService2Dependencies<IstoricId, Long, Lo
         istoric.setCofetarie(dependencies.getSecond());
         return istoric;
     }
+
+    @Override
+    public Istoric setDependencies(IstoricBody istoricBody, Pair<Angajat, Cofetarie> dependencies, IstoricId istoricId) {
+        Istoric istoric = getModelById(istoricId);
+        mapper.updateModelFromBody(istoricBody, istoric);
+        istoric.setAngajat(dependencies.getFirst());
+        istoric.setCofetarie(dependencies.getSecond());
+        return istoric;
+    }
+
 
     @Override
     public Pair<Boolean, String> existsByUniqueFieldUpdate(IstoricBody istoricBody, IstoricId id) {

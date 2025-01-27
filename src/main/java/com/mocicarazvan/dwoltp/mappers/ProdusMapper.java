@@ -22,4 +22,21 @@ public class ProdusMapper implements DtosModelMapper<ProdusBody, Produs, Produs>
     public Produs fromModelToResponse(Produs produs) {
         return produs;
     }
+
+    @Override
+    public void updateModelFromBody(ProdusBody produsBody, Produs produs) {
+        produs.setNume(produsBody.getNume());
+        produs.setPret(produsBody.getPret());
+        produs.setTip(produsBody.getTip());
+        produs.setGramaj(produsBody.getGramaj());
+    }
+
+    @Override
+    public void updateModelFromOldModel(Produs modelToBeChanged, Produs modelToChangeFrom) {
+        modelToBeChanged.setNume(modelToChangeFrom.getNume());
+        modelToBeChanged.setPret(modelToChangeFrom.getPret());
+        modelToBeChanged.setTip(modelToChangeFrom.getTip());
+        modelToBeChanged.setGramaj(modelToChangeFrom.getGramaj());
+//        modelToBeChanged.setProdusIngredients(modelToChangeFrom.getProdusIngredients());
+    }
 }

@@ -19,4 +19,8 @@ public interface CofetarieRepository extends JpaRepository<Cofetarie, Long> {
             """)
     Page<Cofetarie> findAllByCustom(String numeQuery, String locatieNume,
                                     CofetarieTip tip, Long locatieId, Pageable pageable);
+
+    boolean existsAllByNume(String nume);
+
+    boolean existsAllByNumeAndIdNot(String nume, Long id);
 }

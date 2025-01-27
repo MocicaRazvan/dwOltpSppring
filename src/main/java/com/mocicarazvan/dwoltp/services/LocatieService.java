@@ -29,6 +29,15 @@ public class LocatieService extends BaseServiceWithDependency<Long, Long, Locati
         return l;
     }
 
+    @Override
+    public Locatie setDependency(LocatieBody body, Oras dependency, Long aLong) {
+        Locatie l = getModelById(aLong);
+        mapper.updateModelFromBody(body, l);
+        l.setOras(dependency);
+        return l;
+    }
+
+
     public Page<Locatie> getPageable(int page, int size, String sortField, boolean ascending, String numeStradaQuery, Long orasId, Long judetId, Long zonaId) {
         if (ParamsUtils.isLongPositive(orasId)) {
             return getPageable(page, size, sortField, ascending, (pr) ->

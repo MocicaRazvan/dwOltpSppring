@@ -9,6 +9,7 @@ import com.mocicarazvan.dwoltp.models.Produs;
 import com.mocicarazvan.dwoltp.models.ProdusIngredient;
 import com.mocicarazvan.dwoltp.repositories.ProdusRepository;
 import com.mocicarazvan.dwoltp.services.common.BaseService;
+import com.mocicarazvan.dwoltp.utils.TransformableWrappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class ProdusService extends BaseService<Long, Produs, ProdusBody, Produs,
     public Page<Produs> getPageable(int page, int size, String sortField, boolean ascending, String numeQuery, BigDecimal pretMin, BigDecimal pretMax,
                                     ProdusTip tip, Double gramajMin, Double gramajMax,
                                     List<Long> ingedienteIds) {
-        
+
         return getPageable(page, size, sortField, ascending, (pr) -> repository.findAllByCustom(numeQuery, pretMin, pretMax, tip, gramajMin, gramajMax, ingedienteIds, pr));
     }
 
@@ -50,6 +51,7 @@ public class ProdusService extends BaseService<Long, Produs, ProdusBody, Produs,
         }
         Produs produs = mapper.fromBodyToModel(produsBody);
         produs.setProdusIngredients(ingredients.stream().map(ingredient -> new ProdusIngredient(produs, ingredient)).toList());
-        return repository.save(produs);
+        return TransformableWrappers.of(repository.save(produs))
+                .mapToValue(m -> getModelById(m.getId()));
     }
 }

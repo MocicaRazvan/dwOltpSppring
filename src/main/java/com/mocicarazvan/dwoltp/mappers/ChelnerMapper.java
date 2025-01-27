@@ -8,6 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ChelnerMapper implements DtosModelMapper<ChelnerBody, Chelner, Chelner> {
+    private final AngajatMapper angajatMapper;
+
+    public ChelnerMapper(AngajatMapper angajatMapper) {
+        this.angajatMapper = angajatMapper;
+    }
+
     @Override
     public Chelner fromBodyToModel(ChelnerBody chelnerBody) {
         return Chelner.builder()
@@ -20,5 +26,20 @@ public class ChelnerMapper implements DtosModelMapper<ChelnerBody, Chelner, Chel
     @Override
     public Chelner fromModelToResponse(Chelner chelner) {
         return chelner;
+    }
+
+    @Override
+    public void updateModelFromBody(ChelnerBody chelnerBody, Chelner chelner) {
+        chelner.setProgramStart(chelnerBody.getProgramStart());
+        chelner.setProgramFinal(chelnerBody.getProgramFinal());
+        chelner.setZiVanzator(chelnerBody.getZiVanzator());
+    }
+
+    @Override
+    public void updateModelFromOldModel(Chelner modelToBeChanged, Chelner modelToChangeFrom) {
+        angajatMapper.updateModelFromOldModel(modelToBeChanged.getAngajat(), modelToChangeFrom.getAngajat());
+        modelToBeChanged.setProgramStart(modelToChangeFrom.getProgramStart());
+        modelToBeChanged.setProgramFinal(modelToChangeFrom.getProgramFinal());
+        modelToBeChanged.setZiVanzator(modelToChangeFrom.getZiVanzator());
     }
 }

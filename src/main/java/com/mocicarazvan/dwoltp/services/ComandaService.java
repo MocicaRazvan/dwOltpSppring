@@ -7,7 +7,7 @@ import com.mocicarazvan.dwoltp.models.*;
 import com.mocicarazvan.dwoltp.repositories.ComandaRepository;
 import com.mocicarazvan.dwoltp.services.common.BaseService;
 import com.mocicarazvan.dwoltp.services.common.GetModel;
-import com.mocicarazvan.dwoltp.utils.WrapNotFoundErrorFuture;
+import com.mocicarazvan.dwoltp.utils.WrapErrorFuture;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +45,7 @@ public class ComandaService extends BaseService<Long, Comanda, ComandaBody, Coma
         CompletableFuture<Locatie> locatie = CompletableFuture.supplyAsync(() -> dependencyLocatieGetter.getModelById(comandaBody.getLocatieId()), executor);
         CompletableFuture<SoferLivrari> soferLivrari = CompletableFuture.supplyAsync(() -> dependencySoferLivrariGetter.getModelById(comandaBody.getSoferId()), executor);
 
-        return WrapNotFoundErrorFuture.wrapCallable(() -> saveComanda(comanda, client, locatie, produse, produseCantitate, soferLivrari), serviceName);
+        return WrapErrorFuture.wrapCallable(() -> saveComanda(comanda, client, locatie, produse, produseCantitate, soferLivrari), serviceName);
 
     }
 

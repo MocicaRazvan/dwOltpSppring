@@ -1,6 +1,7 @@
 package com.mocicarazvan.dwoltp.models;
 
 import com.mocicarazvan.dwoltp.enums.SexTip;
+import com.mocicarazvan.dwoltp.models.supers.ModificatMappedSuper;
 import com.mocicarazvan.dwoltp.utils.GetId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ import java.math.BigDecimal;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Angajat implements GetId<Long> {
+public class Angajat extends ModificatMappedSuper implements GetId<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ANGAJAT", nullable = false, updatable = false)

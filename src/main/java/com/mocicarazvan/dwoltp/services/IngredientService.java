@@ -17,9 +17,11 @@ import java.util.List;
 @Service
 public class IngredientService extends BaseServiceWithDependency
         <Long, Long, Ingredient, IngredientBody, Ingredient, IngredientRepository, Furnizor> {
-    public IngredientService(IngredientRepository repository, IngredientMapper mapper, GetModel<Furnizor, Long> dependencyGetter) {
+    public IngredientService(IngredientRepository repository, IngredientMapper mapper,
+                             GetModel<Furnizor, Long> dependencyGetter) {
         super(repository, mapper, "ingredient", dependencyGetter);
     }
+
 
     @Override
     public Ingredient setDependency(IngredientBody angajatBody, Furnizor dependency) {
@@ -27,6 +29,15 @@ public class IngredientService extends BaseServiceWithDependency
         a.setFurnizor(dependency);
         return a;
     }
+
+    @Override
+    public Ingredient setDependency(IngredientBody ingredientBody, Furnizor dependency, Long aLong) {
+        Ingredient c = getModelById(aLong);
+        mapper.updateModelFromBody(ingredientBody, c);
+        c.setFurnizor(dependency);
+        return c;
+    }
+
 
     public Page<Ingredient> getPageable(int page, int size, String sortField, boolean ascending, String numeQuery, Short stocMin, Short stocMax,
                                         Short stocLunarMin, Short stocLunarMax, Long furnizorId) {

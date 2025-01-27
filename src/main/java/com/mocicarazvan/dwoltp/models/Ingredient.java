@@ -1,5 +1,6 @@
 package com.mocicarazvan.dwoltp.models;
 
+import com.mocicarazvan.dwoltp.models.supers.ModificatMappedSuper;
 import com.mocicarazvan.dwoltp.utils.GetId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ingredient implements GetId<Long> {
+public class Ingredient extends ModificatMappedSuper implements GetId<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

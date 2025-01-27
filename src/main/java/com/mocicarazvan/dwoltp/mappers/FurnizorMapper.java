@@ -20,4 +20,16 @@ public class FurnizorMapper implements DtosModelMapper<FurnizorBody, Furnizor, F
     public Furnizor fromModelToResponse(Furnizor furnizor) {
         return furnizor;
     }
+
+    @Override
+    public void updateModelFromBody(FurnizorBody furnizorBody, Furnizor furnizor) {
+        furnizor.setNume(furnizorBody.getNume());
+        furnizor.setRep(furnizorBody.getRep());
+    }
+
+    @Override
+    public void updateModelFromOldModel(Furnizor modelToBeChanged, Furnizor modelToChangeFrom) {
+        modelToBeChanged.setNume(modelToChangeFrom.getNume());
+        modelToBeChanged.setRep(modelToChangeFrom.getRep());
+    }
 }

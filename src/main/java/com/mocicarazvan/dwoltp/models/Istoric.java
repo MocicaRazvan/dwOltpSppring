@@ -2,6 +2,7 @@ package com.mocicarazvan.dwoltp.models;
 
 import com.mocicarazvan.dwoltp.enums.AngajatTip;
 import com.mocicarazvan.dwoltp.models.composedIds.IstoricId;
+import com.mocicarazvan.dwoltp.models.supers.ModificatMappedSuper;
 import com.mocicarazvan.dwoltp.utils.GetId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Istoric implements GetId<IstoricId> {
+public class Istoric extends ModificatMappedSuper implements GetId<IstoricId> {
     @EmbeddedId
     private IstoricId id;
 

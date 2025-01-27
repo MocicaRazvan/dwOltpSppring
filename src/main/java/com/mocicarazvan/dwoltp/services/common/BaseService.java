@@ -3,6 +3,7 @@ package com.mocicarazvan.dwoltp.services.common;
 import com.mocicarazvan.dwoltp.exceptions.EntityWithUniqueExists;
 import com.mocicarazvan.dwoltp.exceptions.NotFoundException;
 import com.mocicarazvan.dwoltp.mappers.common.DtosModelMapper;
+import com.mocicarazvan.dwoltp.utils.GetId;
 import com.mocicarazvan.dwoltp.utils.PageableUtils;
 import com.mocicarazvan.dwoltp.utils.TransformableWrappers;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
-public abstract class BaseService<ID, MODEL, BODY, RESPONSE, REPOSITORY extends JpaRepository<MODEL, ID>> implements GetModel<MODEL, ID> {
+public abstract class BaseService<ID, MODEL extends GetId<ID>, BODY, RESPONSE, REPOSITORY extends JpaRepository<MODEL, ID>> implements GetModel<MODEL, ID> {
     protected final REPOSITORY repository;
     protected final DtosModelMapper<BODY, MODEL, RESPONSE> mapper;
     protected final String serviceName;
@@ -39,9 +40,9 @@ public abstract class BaseService<ID, MODEL, BODY, RESPONSE, REPOSITORY extends 
     }
 
     public TransformableWrappers.MappableWrapper<Boolean> existsById(ID id) {
-        return new TransformableWrappers.MappableWrapper<>(repository.existsById(id))
+        return TransformableWrappers.of(repository.existsById(id))
                 .map(b -> {
-                    if (!b.getValue()) {
+                    if (!b) {
                         throw new NotFoundException(serviceName, "id");
                     }
                     return b;
@@ -62,8 +63,10 @@ public abstract class BaseService<ID, MODEL, BODY, RESPONSE, REPOSITORY extends 
         return Pair.of(false, "");
     }
 
+
     public MODEL saveFromBody(BODY body) {
-        return repository.save(mapper.fromBodyToModel(body));
+        return TransformableWrappers.of(repository.save(mapper.fromBodyToModel(body)))
+                .mapToValue(m -> getModelById(m.getId()));
     }
 
     public TransformableWrappers.DefaultMappableWrapper verifyExistsByUniqueField(BODY body) {
@@ -77,7 +80,7 @@ public abstract class BaseService<ID, MODEL, BODY, RESPONSE, REPOSITORY extends 
 
     public RESPONSE create(BODY body) {
         return
-                verifyExistsByUniqueField(body).map(_ ->
+                verifyExistsByUniqueField(body).mapToValue(_ ->
                         saveBody(body)
                 );
     }
@@ -85,7 +88,7 @@ public abstract class BaseService<ID, MODEL, BODY, RESPONSE, REPOSITORY extends 
 
     public RESPONSE update(ID id, BODY body) {
         return
-                existsById(id).map(_ -> verifyExistsByUniqueField(body, id).map(_ ->
+                existsById(id).mapToValue(_ -> verifyExistsByUniqueField(body, id).mapToValue(_ ->
                         saveBody(body)
                 ));
     }
@@ -107,8 +110,8 @@ public abstract class BaseService<ID, MODEL, BODY, RESPONSE, REPOSITORY extends 
     }
 
     public Page<RESPONSE> getPageable(int page, int size, String sortField, boolean ascending, Function<PageRequest, Page<MODEL>> pageableFunction) {
-        return new TransformableWrappers.MappableWrapper<>(pageableFunction.apply(PageableUtils.createPageRequest(page, size, sortField, ascending)))
-                .map(pageMappableWrapper -> new PageImpl<>(pageMappableWrapper.getValue().getContent(), pageMappableWrapper.getValue().getPageable(), pageMappableWrapper.getValue().getTotalElements())
+        return TransformableWrappers.of(pageableFunction.apply(PageableUtils.createPageRequest(page, size, sortField, ascending)))
+                .mapToValue(pageMappableWrapper -> new PageImpl<>(pageMappableWrapper.getContent(), pageMappableWrapper.getPageable(), pageMappableWrapper.getTotalElements())
                         .map(mapper::fromModelToResponse)
                 );
 
@@ -124,6 +127,8 @@ public abstract class BaseService<ID, MODEL, BODY, RESPONSE, REPOSITORY extends 
         if (exists.getFirst()) {
             throw new EntityWithUniqueExists(serviceName, exists.getSecond());
         }
-        return new TransformableWrappers.DefaultMappableWrapper();
+        return TransformableWrappers.of();
     }
+
+
 }
