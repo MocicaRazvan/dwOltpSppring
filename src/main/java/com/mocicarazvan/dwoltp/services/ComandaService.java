@@ -50,7 +50,7 @@ public class ComandaService extends BaseService<Long, Comanda, ComandaBody, Coma
         CompletableFuture<Client> client = CompletableFuture.supplyAsync(() -> dependencyClientGetter.getModelById(comandaBody.getClientId()), executor);
         CompletableFuture<Locatie> locatie = CompletableFuture.supplyAsync(() -> dependencyLocatieGetter.getModelById(comandaBody.getLocatieId()), executor);
         CompletableFuture<SoferLivrari> soferLivrari = CompletableFuture.supplyAsync(() -> dependencySoferLivrariGetter.getModelById(comandaBody.getSoferId()), executor);
-        CompletableFuture<BigDecimal> sumaTotala = CompletableFuture.supplyAsync(() -> getSumaTotala(comandaBody), executor);
+        CompletableFuture<BigDecimal> sumaTotala = CompletableFuture.supplyAsync(() -> getSumaTotala(comandaBody, produseCantitate), executor);
         return WrapErrorFuture.wrapCallable(() -> saveComanda(comanda, client, locatie, produse, produseCantitate, soferLivrari, sumaTotala), serviceName);
 
     }
@@ -74,17 +74,15 @@ public class ComandaService extends BaseService<Long, Comanda, ComandaBody, Coma
         return getPageable(page, size, sortField, ascending, (pr) -> repository.findAllByCustom(minSuma, maxSuma, minDataOnorare, maxDataOnorare, clientId, soferId, nrPlati, locatieId, produseIds, tipPlati, pr));
     }
 
-    private BigDecimal getSumaTotala(ComandaBody comandaBody) {
-        var prods = produsService.findAllByIdsInWithPromotie(
-                comandaBody.getComandaProduse().stream().map(ComandaProdusBody::getProdusId).collect(Collectors.toList()),
-                comandaBody.getDataComanda()
-        );
+    private BigDecimal getSumaTotala(ComandaBody comandaBody, HashMap<Long, Short> produseCantitate) {
+        return produsService.findAllByIdsInWithPromotie(
+                        comandaBody.getComandaProduse().stream().map(ComandaProdusBody::getProdusId).collect(Collectors.toList()),
+                        comandaBody.getDataComanda()
+                ).stream()
+                .reduce(BigDecimal.ZERO,
+                        (sum, pp) -> sum.add(pp.getPretFinal().multiply(BigDecimal.valueOf(produseCantitate.get(pp.getId())))),
+                        BigDecimal::add);
 
-        var produseCantitate = comandaBody.getComandaProduse().stream().collect(Collectors.toMap(ComandaProdusBody::getProdusId, ComandaProdusBody::getCantitate));
-
-        return prods.stream()
-                .map(p -> p.getPretFinal().multiply(BigDecimal.valueOf(produseCantitate.get(p.getId()))))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 
