@@ -22,8 +22,8 @@ public interface PromotieRepository extends JpaRepository<Promotie, Long> {
                                     (:perioadaStart is null or p.perioadaStart >= :perioadaStart)
                                     and (:perioadaFinal is null or p.perioadaFinal <= :perioadaFinal)
                                     and (:produsId = -1 or p.produs.id = :produsId)
-                                   and (:discountMin = -1 or p.discount >= :discountMin)
-                                     and (:discountMax = -1 or p.discount <= :discountMax)
+                                   and (:discountMin is null or p.discount >= :discountMin)
+                                     and (:discountMax is null or p.discount <= :discountMax)
             
             """)
     Page<Promotie> findAllByCustom(LocalDate perioadaStart, LocalDate perioadaFinal, Long produsId,
