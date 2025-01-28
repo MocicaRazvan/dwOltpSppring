@@ -109,11 +109,19 @@ public abstract class BaseService<ID, MODEL extends GetId<ID>, BODY, RESPONSE, R
 
     }
 
-    public Page<RESPONSE> getPageable(int page, int size, String sortField, boolean ascending, Function<PageRequest, Page<MODEL>> pageableFunction) {
+    public <R, M> Page<R> getPageable(int page, int size, String sortField, boolean ascending, Function<PageRequest, Page<M>> pageableFunction,
+                                      Function<M, R> mapper
+    ) {
         return TransformableWrappers.of(pageableFunction.apply(PageableUtils.createPageRequest(page, size, sortField, ascending)))
                 .mapToValue(pageMappableWrapper -> new PageImpl<>(pageMappableWrapper.getContent(), pageMappableWrapper.getPageable(), pageMappableWrapper.getTotalElements())
-                        .map(mapper::fromModelToResponse)
+                        .map(mapper)
                 );
+
+
+    }
+
+    public Page<RESPONSE> getPageable(int page, int size, String sortField, boolean ascending, Function<PageRequest, Page<MODEL>> pageableFunction) {
+        return getPageable(page, size, sortField, ascending, pageableFunction, mapper::fromModelToResponse);
 
 
     }

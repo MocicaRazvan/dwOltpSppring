@@ -20,8 +20,8 @@ public class ComandaBody {
     @NotNull
     private Long clientId;
 
-    @Positive
-    private Double suma;
+    @NotNull
+    private LocalDate dataComanda = LocalDate.now();
 
     @NotNull
     private LocalDate dataOnorare;

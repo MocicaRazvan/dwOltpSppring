@@ -26,7 +26,7 @@ public class CommandaMapper implements DtosModelMapper<ComandaBody, Comanda, Com
     @Override
     public Comanda fromBodyToModel(ComandaBody comandaBody) {
         return Comanda.builder()
-                .suma(comandaBody.getSuma())
+//                .suma(comandaBody.getSuma())
                 .dataOnorare(comandaBody.getDataOnorare())
                 .build();
     }
@@ -38,7 +38,7 @@ public class CommandaMapper implements DtosModelMapper<ComandaBody, Comanda, Com
 
     @Override
     public void updateModelFromBody(ComandaBody comandaBody, Comanda comanda) {
-        comanda.setSuma(comandaBody.getSuma());
+//        comanda.setSuma(comandaBody.getSuma());
         comanda.setDataOnorare(comandaBody.getDataOnorare());
     }
 

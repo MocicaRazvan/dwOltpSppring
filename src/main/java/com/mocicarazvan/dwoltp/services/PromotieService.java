@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class PromotieService extends BaseServiceWithDependency
@@ -46,11 +47,12 @@ public class PromotieService extends BaseServiceWithDependency
 
     @Override
     public Pair<Boolean, String> existsByUniqueFieldUpdate(PromotieBody angajatBody, Long id) {
-        return Pair.of(repository.existsAllByPerioadaFinalAndPerioadaStartAndProdus_IdAndIdNot(angajatBody.getPerioadaFinal(), angajatBody.getPerioadaStart(), angajatBody.getProdusId(), id), "perioadaFinal, perioadaStart, produsId");
+        return Pair.of(repository.existsAllByPerioadeAndProdAndIdNot(angajatBody.getPerioadaFinal(), angajatBody.getPerioadaStart(), angajatBody.getProdusId(), id), "perioadaFinal, perioadaStart, produsId");
     }
 
     @Override
     public Pair<Boolean, String> existsByUniqueFieldCreate(PromotieBody angajatBody) {
-        return Pair.of(repository.existsAllByPerioadaFinalAndPerioadaStartAndProdus_Id(angajatBody.getPerioadaFinal(), angajatBody.getPerioadaStart(), angajatBody.getProdusId()), "perioadaFinal, perioadaStart, produsId");
+        return Pair.of(repository.existsAllByPerioadeAndProd(angajatBody.getPerioadaFinal(), angajatBody.getPerioadaStart(), angajatBody.getProdusId()), "perioadaFinal, perioadaStart, produsId");
     }
+
 }
