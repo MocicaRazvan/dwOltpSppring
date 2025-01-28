@@ -4,6 +4,7 @@ package com.mocicarazvan.dwoltp.controllers;
 import com.mocicarazvan.dwoltp.dtos.body.LocatieBody;
 import com.mocicarazvan.dwoltp.models.Locatie;
 import com.mocicarazvan.dwoltp.services.LocatieService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,6 +50,7 @@ public class LocatieController {
             @RequestParam(required = false, defaultValue = "-1") Long judetId,
             @RequestParam(required = false, defaultValue = "-1") Long zonaId
     ) {
-        return ResponseEntity.ok(locatieService.getPageable(page, size, sortField, ascending, numeStradaQuery, orasId, judetId, zonaId));
+        return ResponseEntity.ok(locatieService.getPageable(page, size, sortField, ascending,
+                SearchStringUtils.cleanSearchQuery(numeStradaQuery), orasId, judetId, zonaId));
     }
 }

@@ -4,6 +4,7 @@ package com.mocicarazvan.dwoltp.controllers;
 import com.mocicarazvan.dwoltp.dtos.body.SoferLivrariBody;
 import com.mocicarazvan.dwoltp.models.SoferLivrari;
 import com.mocicarazvan.dwoltp.services.SoferLivrariService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -52,6 +53,8 @@ public class SoferLivrariController {
             @RequestParam(required = false, defaultValue = "-1") Short nrLivrariZiMax,
             @RequestParam(required = false, defaultValue = "") String emailQuery
     ) {
-        return ResponseEntity.ok(soferLivrariService.getPageable(page, size, sortField, ascending, numeQuery, prenumeQuery, emailQuery, cofetarieId, nrLivrariZiMin, nrLivrariZiMax));
+        return ResponseEntity.ok(soferLivrariService.getPageable(page, size, sortField, ascending,
+                SearchStringUtils.cleanSearchQuery(numeQuery), SearchStringUtils.cleanSearchQuery(prenumeQuery),
+                SearchStringUtils.cleanSearchQuery(emailQuery), cofetarieId, nrLivrariZiMin, nrLivrariZiMax));
     }
 }

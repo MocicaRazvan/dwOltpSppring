@@ -38,28 +38,50 @@ public interface ProdusRepository extends JpaRepository<Produs, Long> {
     );
 
     @Query("""
-            select new com.mocicarazvan.dwoltp.dtos.repositories.ProdusPretFinal(p,
-                         cast(p.pret * (1 - coalesce((select max(pr.discount)
-                                     from Promotie pr
-                                                 where pr.produs = p
-                                                 and pr.perioadaFinal<=:perioadaFinal), 0)) as bigdecimal )as pretFinal)
-            from Produs p
-            where p.id in :produseIds
+            SELECT new com.mocicarazvan.dwoltp.dtos.repositories.ProdusPretFinal(
+                       p,
+                       cast( p.pret * (1 - COALESCE((
+                           select max(pr.discount) from
+                          Promotie pr
+                          where p.id = pr.produs.id and pr.perioadaStart <= :perioadaStart
+                          and pr.perioadaFinal >= :perioadaFinal
+                          and pr.perioadaStart = (
+                              select max(pr2.perioadaStart) from Promotie pr2
+                              where pr2.produs.id=p.id
+                              and pr.perioadaFinal >= :perioadaFinal)
+                       ), 0)) as bigdecimal )
+                   )
+            FROM Produs p
+            WHERE p.id IN :produseIds
             """)
-    List<ProdusPretFinal> findAllByIdsInWithPromotie(List<Long> produseIds, @NotNull LocalDate perioadaFinal);
+    List<ProdusPretFinal> findAllByIdsInWithPromotie(List<Long> produseIds, LocalDate perioadaStart, LocalDate perioadaFinal);
 
     @Query("""
             select new com.mocicarazvan.dwoltp.dtos.repositories.ProdusPromotie(p, pr)
             from Produs p
-            left join Promotie pr on p.id = pr.produs.id and pr.perioadaFinal <= :perioadaFinal
+            left join Promotie pr
+                                on p.id = pr.produs.id and pr.perioadaStart >= :perioadaStart
+                                and pr.perioadaFinal >= :perioadaFinal
+                                and pr.perioadaStart = (
+                                select max(pr2.perioadaStart) from Promotie pr2
+                                where pr2.produs.id=p.id
+                                and pr.perioadaFinal >= :perioadaFinal
+                                 )
             where p.id = :produsId
             """)
-    ProdusPromotie getProdusWithPromotie(Long produsId, LocalDate perioadaFinal);
+    ProdusPromotie getProdusWithPromotie(Long produsId, LocalDate perioadaStart, LocalDate perioadaFinal);
 
 
     @Query("""
                   select new com.mocicarazvan.dwoltp.dtos.repositories.ProdusPromotie(p, pr) from Produs p
-                                            left join Promotie pr on p.id = pr.produs.id and pr.perioadaFinal <= :perioadaFinal
+                                            left join Promotie pr
+                                                        on p.id = pr.produs.id and pr.perioadaStart >= :perioadaStart
+                                                                    and pr.perioadaFinal >= :perioadaFinal
+                                                                    and pr.perioadaStart = (
+                                                                        select max(pr2.perioadaStart) from Promotie pr2
+                                                                                    where pr2.produs.id=p.id
+                                                                                    and pr.perioadaFinal >= :perioadaFinal
+                                                                                )
                                             where
                                                 (:numeQuery is null or upper(p.nume) like upper(concat('%', :numeQuery, '%')))
                                                 and (:pretMin is null or p.pret >= :pretMin)
@@ -76,7 +98,7 @@ public interface ProdusRepository extends JpaRepository<Produs, Long> {
                     String numeQuery, BigDecimal pretMin, BigDecimal pretMax,
                     ProdusTip tip, Double gramajMin, Double gramajMax,
                     List<Long> ingredientIds,
-                    LocalDate perioadaFinal,
+                    LocalDate perioadaStart, LocalDate perioadaFinal,
                     Pageable pageable
             );
 }

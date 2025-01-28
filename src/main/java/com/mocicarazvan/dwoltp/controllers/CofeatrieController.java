@@ -5,6 +5,7 @@ import com.mocicarazvan.dwoltp.dtos.body.CofetarieBody;
 import com.mocicarazvan.dwoltp.enums.CofetarieTip;
 import com.mocicarazvan.dwoltp.models.Cofetarie;
 import com.mocicarazvan.dwoltp.services.CofetarieService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,6 +51,7 @@ public class CofeatrieController {
             @RequestParam(required = false) CofetarieTip tip,
             @RequestParam(required = false, defaultValue = "-1") Long locatieId
     ) {
-        return ResponseEntity.ok(cofetarieService.getPageable(page, size, sortField, ascending, numeQuery, locatieNumeQuery, tip, locatieId));
+        return ResponseEntity.ok(cofetarieService.getPageable(page, size, sortField, ascending,
+                SearchStringUtils.cleanSearchQuery(numeQuery), SearchStringUtils.cleanSearchQuery(locatieNumeQuery), tip, locatieId));
     }
 }

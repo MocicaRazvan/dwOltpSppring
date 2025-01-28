@@ -4,6 +4,7 @@ package com.mocicarazvan.dwoltp.controllers;
 import com.mocicarazvan.dwoltp.dtos.body.IngredientBody;
 import com.mocicarazvan.dwoltp.models.Ingredient;
 import com.mocicarazvan.dwoltp.services.IngredientService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -52,6 +53,7 @@ public class IngredientController {
             @RequestParam(required = false, defaultValue = "-1") Short stocLunarMax,
             @RequestParam(required = false, defaultValue = "-1") Long furnizorId
     ) {
-        return ResponseEntity.ok(ingredientService.getPageable(page, size, sortField, ascending, numeQuery, stocMin, stocMax, stocLunarMin, stocLunarMax, furnizorId));
+        return ResponseEntity.ok(ingredientService.getPageable(page, size, sortField, ascending,
+                SearchStringUtils.cleanSearchQuery(numeQuery), stocMin, stocMax, stocLunarMin, stocLunarMax, furnizorId));
     }
 }

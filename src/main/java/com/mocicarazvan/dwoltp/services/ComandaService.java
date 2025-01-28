@@ -77,7 +77,7 @@ public class ComandaService extends BaseService<Long, Comanda, ComandaBody, Coma
     private BigDecimal getSumaTotala(ComandaBody comandaBody, HashMap<Long, Short> produseCantitate) {
         return produsService.findAllByIdsInWithPromotie(
                         comandaBody.getComandaProduse().stream().map(ComandaProdusBody::getProdusId).collect(Collectors.toList()),
-                        comandaBody.getDataComanda()
+                        comandaBody.getDataComanda(), comandaBody.getDataComanda()
                 ).stream()
                 .reduce(BigDecimal.ZERO,
                         (sum, pp) -> sum.add(pp.getPretFinal().multiply(BigDecimal.valueOf(produseCantitate.get(pp.getId())))),

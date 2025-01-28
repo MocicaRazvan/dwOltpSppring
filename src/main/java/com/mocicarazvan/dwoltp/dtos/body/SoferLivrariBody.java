@@ -14,5 +14,5 @@ import lombok.experimental.SuperBuilder;
 @Data
 public class SoferLivrariBody extends AngajatBody {
     @Positive
-    private Short nrLivrariZi;
+    private Short nrLivrariZi = 1;
 }

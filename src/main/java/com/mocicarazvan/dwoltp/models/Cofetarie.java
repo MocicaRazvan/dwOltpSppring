@@ -28,7 +28,7 @@ public class Cofetarie extends ModificatMappedSuper implements GetId<Long> {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "ID_LOCATIE", nullable = false)
-    private com.mocicarazvan.dwoltp.models.Locatie locatie;
+    private Locatie locatie;
 
     @Column(name = "TIP", length = 14)
     private CofetarieTip tip;

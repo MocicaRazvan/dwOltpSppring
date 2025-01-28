@@ -6,6 +6,7 @@ import com.mocicarazvan.dwoltp.dtos.repositories.ProdusPromotie;
 import com.mocicarazvan.dwoltp.enums.ProdusTip;
 import com.mocicarazvan.dwoltp.models.Produs;
 import com.mocicarazvan.dwoltp.services.ProdusService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,10 +31,11 @@ public class ProdusController {
 
     @GetMapping("/promotie/{id}")
     public ResponseEntity<ProdusPromotie> getProdusPromotieById(@PathVariable Long id,
+                                                                @RequestParam(defaultValue = "2022-12-01") LocalDate perioadaStart,
                                                                 @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate perioadaFinal
     ) {
 
-        return ResponseEntity.ok(produsService.getProdusWithPromotie(id, perioadaFinal));
+        return ResponseEntity.ok(produsService.getProdusWithPromotie(id, perioadaStart, perioadaFinal));
     }
 
     @PostMapping("/create")
@@ -83,9 +85,11 @@ public class ProdusController {
             @RequestParam(required = false) Double gramajMin,
             @RequestParam(required = false) Double gramajMax,
             @RequestParam(required = false) List<Long> ingedienteIds,
+            @RequestParam(defaultValue = "2022-12-01") LocalDate perioadaStart,
             @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate perioadaFinal
 
     ) {
-        return ResponseEntity.ok(produsService.getPageableWithPromotie(page, size, sortField, ascending, numeQuery, pretMin, pretMax, tip, gramajMin, gramajMax, ingedienteIds, perioadaFinal));
+        return ResponseEntity.ok(produsService.getPageableWithPromotie(page, size, sortField, ascending,
+                SearchStringUtils.cleanSearchQuery(numeQuery), pretMin, pretMax, tip, gramajMin, gramajMax, ingedienteIds, perioadaStart, perioadaFinal));
     }
 }

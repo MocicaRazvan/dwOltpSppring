@@ -4,6 +4,7 @@ package com.mocicarazvan.dwoltp.controllers;
 import com.mocicarazvan.dwoltp.dtos.body.CofetarBody;
 import com.mocicarazvan.dwoltp.models.Cofetar;
 import com.mocicarazvan.dwoltp.services.CofetarService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -51,6 +52,9 @@ public class CofetarController {
             @RequestParam(required = false, defaultValue = "") String specializareQuery,
             @RequestParam(required = false, defaultValue = "") String emailQuery
     ) {
-        return ResponseEntity.ok(cofetarService.getPageable(page, size, sortField, ascending, numeQuery, prenumeQuery, emailQuery, cofetarieId, specializareQuery));
+        return ResponseEntity.ok(cofetarService.getPageable(page, size, sortField, ascending,
+                SearchStringUtils.cleanSearchQuery(numeQuery), SearchStringUtils.cleanSearchQuery(prenumeQuery),
+                SearchStringUtils.cleanSearchQuery(emailQuery),
+                cofetarieId, specializareQuery));
     }
 }

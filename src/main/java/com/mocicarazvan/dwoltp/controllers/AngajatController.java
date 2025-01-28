@@ -4,6 +4,7 @@ package com.mocicarazvan.dwoltp.controllers;
 import com.mocicarazvan.dwoltp.dtos.body.AngajatBody;
 import com.mocicarazvan.dwoltp.models.Angajat;
 import com.mocicarazvan.dwoltp.services.AngajatService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,6 +51,7 @@ public class AngajatController {
             @RequestParam(required = false, defaultValue = "-1") Long cofetarieId,
             @RequestParam(required = false, defaultValue = "") String emailQuery
     ) {
-        return ResponseEntity.ok(angajatService.getPageable(page, size, sortField, ascending, numeQuery, prenumeQuery, emailQuery, cofetarieId));
+        return ResponseEntity.ok(angajatService.getPageable(page, size, sortField, ascending, SearchStringUtils.cleanSearchQuery(numeQuery),
+                SearchStringUtils.cleanSearchQuery(prenumeQuery), SearchStringUtils.cleanSearchQuery(emailQuery), cofetarieId));
     }
 }

@@ -4,6 +4,7 @@ package com.mocicarazvan.dwoltp.controllers;
 import com.mocicarazvan.dwoltp.dtos.body.ClientBody;
 import com.mocicarazvan.dwoltp.models.Client;
 import com.mocicarazvan.dwoltp.services.ClientService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,6 +50,7 @@ public class ClientController {
             @RequestParam(required = false, defaultValue = "") String prenumeQuery,
             @RequestParam(required = false, defaultValue = "") String emailQuery
     ) {
-        return ResponseEntity.ok(clientService.getPageable(page, size, sortField, ascending, numeQuery, prenumeQuery, emailQuery));
+        return ResponseEntity.ok(clientService.getPageable(page, size, sortField, ascending,
+                SearchStringUtils.cleanSearchQuery(numeQuery), SearchStringUtils.cleanSearchQuery(prenumeQuery), emailQuery));
     }
 }

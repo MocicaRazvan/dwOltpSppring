@@ -4,6 +4,7 @@ package com.mocicarazvan.dwoltp.controllers;
 import com.mocicarazvan.dwoltp.dtos.body.FurnizorBody;
 import com.mocicarazvan.dwoltp.models.Furnizor;
 import com.mocicarazvan.dwoltp.services.FurnizorService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,6 +49,6 @@ public class FurnizorController {
             @RequestParam(required = false, defaultValue = "") String numeQuery,
             @RequestParam(required = false, defaultValue = "") String repQuery
     ) {
-        return ResponseEntity.ok(furnizorService.getPageable(page, size, sortField, ascending, numeQuery, repQuery));
+        return ResponseEntity.ok(furnizorService.getPageable(page, size, sortField, ascending, SearchStringUtils.cleanSearchQuery(numeQuery), SearchStringUtils.cleanSearchQuery(repQuery)));
     }
 }

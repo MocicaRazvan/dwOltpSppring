@@ -5,6 +5,7 @@ import com.mocicarazvan.dwoltp.dtos.body.IstoricBody;
 import com.mocicarazvan.dwoltp.models.Istoric;
 import com.mocicarazvan.dwoltp.models.composedIds.IstoricId;
 import com.mocicarazvan.dwoltp.services.IstoricService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -63,6 +64,8 @@ public class IstoricController {
             @RequestParam(required = false) BigDecimal salariuMin,
             @RequestParam(required = false) BigDecimal salariuMax
     ) {
-        return ResponseEntity.ok(istoricService.getPageable(page, size, sortField, ascending, angajatId, cofeatrieId, numeQuery, prenumeQuery, isDataAngajareEndNull, dataAngajareStartMin, dataAngajareStartMax, dataAngajareEndMin, dataAngajareEndMax, salariuMin, salariuMax));
+        return ResponseEntity.ok(istoricService.getPageable(page, size, sortField, ascending, angajatId, cofeatrieId,
+                SearchStringUtils.cleanSearchQuery(numeQuery),
+                SearchStringUtils.cleanSearchQuery(prenumeQuery), isDataAngajareEndNull, dataAngajareStartMin, dataAngajareStartMax, dataAngajareEndMin, dataAngajareEndMax, salariuMin, salariuMax));
     }
 }

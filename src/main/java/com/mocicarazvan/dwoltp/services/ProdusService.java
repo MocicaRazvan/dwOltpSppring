@@ -44,10 +44,10 @@ public class ProdusService extends BaseService<Long, Produs, ProdusBody, Produs,
 
     public Page<ProdusPromotie> getPageableWithPromotie(int page, int size, String sortField, boolean ascending, String numeQuery, BigDecimal pretMin, BigDecimal pretMax,
                                                         ProdusTip tip, Double gramajMin, Double gramajMax,
-                                                        List<Long> ingedienteIds, LocalDate perioadaFinal) {
+                                                        List<Long> ingedienteIds, LocalDate perioadaStart, LocalDate perioadaFinal) {
 
         return getPageable(page, size, sortField, ascending,
-                (pr) -> repository.findAllByCustomWithPromotie(numeQuery, pretMin, pretMax, tip, gramajMin, gramajMax, ingedienteIds, perioadaFinal, pr
+                (pr) -> repository.findAllByCustomWithPromotie(numeQuery, pretMin, pretMax, tip, gramajMin, gramajMax, ingedienteIds, perioadaStart, perioadaFinal, pr
                 ), m -> m);
     }
 
@@ -68,11 +68,11 @@ public class ProdusService extends BaseService<Long, Produs, ProdusBody, Produs,
                 .mapToValue(m -> getModelById(m.getId()));
     }
 
-    public List<ProdusPretFinal> findAllByIdsInWithPromotie(List<Long> produseIds, @NotNull LocalDate perioadaFinal) {
-        return repository.findAllByIdsInWithPromotie(produseIds, perioadaFinal);
+    public List<ProdusPretFinal> findAllByIdsInWithPromotie(List<Long> produseIds, LocalDate perioadaStart, LocalDate perioadaFinal) {
+        return repository.findAllByIdsInWithPromotie(produseIds, perioadaStart, perioadaFinal);
     }
 
-    public ProdusPromotie getProdusWithPromotie(Long produsId, LocalDate perioadaFinal) {
-        return repository.getProdusWithPromotie(produsId, perioadaFinal);
+    public ProdusPromotie getProdusWithPromotie(Long produsId, LocalDate perioadaStart, LocalDate perioadaFinal) {
+        return repository.getProdusWithPromotie(produsId, perioadaStart, perioadaFinal);
     }
 }

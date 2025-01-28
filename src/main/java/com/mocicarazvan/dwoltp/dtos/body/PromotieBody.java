@@ -1,6 +1,7 @@
 package com.mocicarazvan.dwoltp.dtos.body;
 
 import com.mocicarazvan.dwoltp.dtos.common.DependencyId;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 public class PromotieBody implements DependencyId<Long> {
     @NotNull
     private Long produsId;
+
     @NotNull
     private LocalDate perioadaStart;
 
@@ -28,7 +30,8 @@ public class PromotieBody implements DependencyId<Long> {
     private BigDecimal discount;
 
     @Override
+    @Schema(hidden = true)
     public Long getDependencyId() {
-        return 0L;
+        return produsId;
     }
 }

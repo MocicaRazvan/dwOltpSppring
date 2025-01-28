@@ -4,6 +4,7 @@ package com.mocicarazvan.dwoltp.controllers;
 import com.mocicarazvan.dwoltp.dtos.body.ChelnerBody;
 import com.mocicarazvan.dwoltp.models.Chelner;
 import com.mocicarazvan.dwoltp.services.ChelnerService;
+import com.mocicarazvan.dwoltp.utils.SearchStringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -51,6 +52,9 @@ public class ChelnerController {
             @RequestParam(required = false, defaultValue = "-1") Long cofetarieId,
             @RequestParam(required = false, defaultValue = "-1") Short ziVanzator
     ) {
-        return ResponseEntity.ok(chelnerService.getPageable(page, size, sortField, ascending, numeQuery, prenumeQuery, emailQuery, cofetarieId, ziVanzator));
+        return ResponseEntity.ok(chelnerService.getPageable(page, size, sortField, ascending,
+                SearchStringUtils.cleanSearchQuery(numeQuery), SearchStringUtils.cleanSearchQuery(prenumeQuery),
+                SearchStringUtils.cleanSearchQuery(emailQuery),
+                cofetarieId, ziVanzator));
     }
 }
