@@ -38,6 +38,8 @@ public class AngajatMapper implements DtosModelMapper<AngajatBody, Angajat, Anga
         angajat.setEmail(angajatBody.getEmail());
         angajat.setSex(angajatBody.getSex());
         angajat.setTelefon(angajatBody.getTelefon());
+        angajat.setSalariu(angajatBody.getSalariu());
+        angajat.setCnp(angajatBody.getCnp());
     }
 
     @Override
