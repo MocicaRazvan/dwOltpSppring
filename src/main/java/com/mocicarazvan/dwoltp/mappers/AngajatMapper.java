@@ -21,6 +21,8 @@ public class AngajatMapper implements DtosModelMapper<AngajatBody, Angajat, Anga
                 .email(angajatBody.getEmail())
                 .sex(angajatBody.getSex())
                 .telefon(angajatBody.getTelefon())
+                .salariu(angajatBody.getSalariu())
+                .cnp(angajatBody.getCnp())
                 .build();
     }
 
